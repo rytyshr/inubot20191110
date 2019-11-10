@@ -21,6 +21,12 @@ const bot = new line.Client(line_config);
 //  'https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg'
 //);
 
+const image = {
+  "type": "image",
+  "originalContentUrl": "https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg",
+  "previewImageUrl": "https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg"
+};
+
 // ルーター設定
 server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   // 先行してLINE側にステータスコード200でレスポンスする。
@@ -36,18 +42,17 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
         // ユーザーからのテキストメッセージが「こんにちは」だった場合のみ反応。
           if (event.message.text == "こんにちは"){
             // replyMessage()で返信し、そのプロミスをevents_processedに追加。
-              events_processed.push(bot.replyMessage(event.replyToken, new messaging.ImageMessageBuilder(
-                'https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg',
-                'https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg'
-              )));
+              events_processed.push(bot.replyMessage(event.replyToken, image));
           }
       }
   });
 
-//  // すべてのイベント処理が終了したら何個のイベントが処理されたか出力。
-//  Promise.all(events_processed).then(
-//      (response) => {
-//          console.log(`${response.length} event(s) processed.`);
-//      }
-//  );
+  process.on('unhandledRejection', console.dir);
+
+  // すべてのイベント処理が終了したら何個のイベントが処理されたか出力。
+  Promise.all(events_processed).then(
+      (response) => {
+          console.log(`${response.length} event(s) processed.`);
+      }
+  );
 });
