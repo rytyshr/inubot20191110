@@ -42,21 +42,12 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
         request(options, function (er, rs, body) {
           // 犬画像URL
           var inu_url = body.message;
-
-          // 画像情報
+          // 犬画像JSON
           var image = {
             "type": "image",
             "originalContentUrl": inu_url,
             "previewImageUrl": inu_url
           };
-          // 画像情報（ダミー）
-          var image_dummy = {
-            "type": "image",
-            "originalContentUrl": "https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg",
-            "previewImageUrl": "https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg"
-          };
-          console.dir(image);
-          console.dir(image_dummy);
           // replyMessage()で返信し、そのプロミスをevents_processedに追加。
           events_processed.push(bot.replyMessage(event.replyToken, image));
         });
