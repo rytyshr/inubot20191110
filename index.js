@@ -3,7 +3,7 @@
 // モジュールのインポート
 const server = require("express")();
 const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
-const request = require('request');
+const request = require("request");
 
 // パラメータ設定
 const line_config = {
@@ -19,8 +19,8 @@ const bot = new line.Client(line_config);
 
 // 犬APIを叩く時に使う使う情報
 const options = {
-  url: 'https://dog.ceo/api/breeds/image/random',
-  method: 'GET',
+  url: "https://dog.ceo/api/breeds/image/random",
+  method: "GET",
   json: true
 }
 
@@ -37,8 +37,8 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
 
   // 犬APIを叩く
   request(options, function (error, response, body) {
-    console.log(body.message);
     inu_url = body.message;
+    console.log(inu_url);
   });
 
   // 画像情報
