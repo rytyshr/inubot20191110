@@ -3,6 +3,7 @@
 // モジュールのインポート
 const server = require("express")();
 const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
+const request = require('request');
 
 // パラメータ設定
 const line_config = {
@@ -16,6 +17,13 @@ server.listen(process.env.PORT || 3000);
 // APIコールのためのクライアントインスタンスを作成
 const bot = new line.Client(line_config);
 
+// 犬APIの情報一式
+const options = {
+  url: 'https://dog.ceo/api/breeds/image/random',
+  method: 'GET',
+  json: true
+}
+
 // ルーター設定
 server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   // 先行してLINE側にステータスコード200でレスポンスする。
@@ -23,6 +31,10 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
 
   // すべてのイベント処理のプロミスを格納する配列。
   let events_processed = [];
+
+  request(options, function (error, response, body) {
+    console.log(body);
+  });
 
   // 画像情報
   let image = {
