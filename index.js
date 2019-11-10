@@ -53,7 +53,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             "previewImageUrl": "https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg"
           };
           // replyMessage()で返信し、そのプロミスをevents_processedに追加。
-          events_processed.push(bot.replyMessage(event.replyToken, image));
+          events_processed.push(bot.replyMessage(event.replyToken, image_dummy));
         });
       }
     }
