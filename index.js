@@ -5,6 +5,12 @@ const server = require("express")();
 const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
 const request = require("request");
 
+// メッセージ
+const message = {
+  type: "text",
+  text: "取り急ぎの犬です"
+}
+
 // パラメータ設定
 const line_config = {
     channelAccessToken: process.env.LINE_ACCESS_TOKEN, // 環境変数からアクセストークンをセットしています
@@ -36,25 +42,18 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   req.body.events.forEach((event) => {
     // この処理の対象をイベントタイプがメッセージで、かつ、テキストタイプだった場合に限定。
     if (event.type == "message" && event.message.type == "text"){
-      // ユーザーからのテキストメッセージが「こんにちは」だった場合のみ反応。
-      if (event.message.text == "こんにちは"){
-        // 犬APIを叩く時に使う情報
-        var message = {
-          type: "text",
-          text: "取り急ぎの犬です"
-        }
-        // 犬APIを叩く
-        request(options, function (er, rs, body) {
-          // 取得した画像URLをセット
-          var image = {
-            "type": "image",
-            "originalContentUrl": body.message,
-            "previewImageUrl": body.message
-          };
-          // replyMessage()で返信し、そのプロミスをevents_processedに追加。
-          events_processed.push(bot.replyMessage(event.replyToken, [message, image]));
-        });
-      }
+      let inu_url = body.message;
+      // 犬APIを叩く
+      request(options, function (er, rs, body) {
+        // 取得した画像URLをセット
+        let image = {
+          "type": "image",
+          "originalContentUrl": inu_url,
+          "previewImageUrl": inu_url
+        };
+        // replyMessage()で返信し、そのプロミスをevents_processedに追加。
+        events_processed.push(bot.replyMessage(event.replyToken, [message, image]));
+      });
     }
   });
 
