@@ -40,13 +40,11 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
       if (event.message.text == "こんにちは"){
         // 犬APIを叩く
         request(options, function (er, rs, body) {
-          // 犬画像URL
-          var inu_url = body.message;
-          // 犬画像JSON
+          // 取得した画像URLをセット
           var image = {
             "type": "image",
-            "originalContentUrl": inu_url,
-            "previewImageUrl": inu_url
+            "originalContentUrl": body.message,
+            "previewImageUrl": body.message
           };
           // replyMessage()で返信し、そのプロミスをevents_processedに追加。
           events_processed.push(bot.replyMessage(event.replyToken, image));
@@ -57,8 +55,8 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
 
   // すべてのイベント処理が終了したら何個のイベントが処理されたか出力。
   Promise.all(events_processed).then(
-      (response) => {
-          console.log(`${response.length} event(s) processed.`);
+      (res) => {
+          console.log(`${res.length} event(s) processed.`);
       }
   );
 });
