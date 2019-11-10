@@ -37,7 +37,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
 
   // 犬APIを叩く
   request(options, function (error, response, body) {
-    inu_url = body.message;
+    inu_url = JSON.stringify(body.message);
     console.log(inu_url);
   });
 
