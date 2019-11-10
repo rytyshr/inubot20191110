@@ -1,7 +1,6 @@
 // モジュールのインポート
 const server = require("express")();
 const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
-const messaging = require("line-messaging");
 
 // パラメータ設定
 const line_config = {
@@ -15,18 +14,6 @@ server.listen(process.env.PORT || 3000);
 // APIコールのためのクライアントインスタンスを作成
 const bot = new line.Client(line_config);
 
-// 画像
-//const image = new messaging.ImageMessageBuilder(
-//  'https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg',
-//  'https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg'
-//);
-
-const image = {
-  "type": "image",
-  "originalContentUrl": "https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg",
-  "previewImageUrl": "https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg"
-};
-
 // ルーター設定
 server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   // 先行してLINE側にステータスコード200でレスポンスする。
@@ -34,6 +21,13 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
 
   // すべてのイベント処理のプロミスを格納する配列。
   let events_processed = [];
+
+  // 画像情報
+  let image = {
+    "type": "image",
+    "originalContentUrl": "https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg",
+    "previewImageUrl": "https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg"
+  };
 
   // イベントオブジェクトを順次処理。
   req.body.events.forEach((event) => {
