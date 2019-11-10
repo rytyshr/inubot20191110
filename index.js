@@ -39,7 +39,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
       // ユーザーからのテキストメッセージが「こんにちは」だった場合のみ反応。
       if (event.message.text == "こんにちは"){
         // 犬APIを叩く
-        request(options, function (error, response, body) {
+        request(options, function (er, rs, body) {
           // 画像情報
           var image = {
             "type": "image",
