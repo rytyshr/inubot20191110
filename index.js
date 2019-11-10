@@ -40,11 +40,14 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
       if (event.message.text == "こんにちは"){
         // 犬APIを叩く
         request(options, function (er, rs, body) {
+          // 犬画像URL
+          var inu_url = JSON.stringify(body.message);
+
           // 画像情報
           var image = {
             "type": "image",
-            "originalContentUrl": JSON.stringify(body.message),
-            "previewImageUrl": JSON.stringify(body.message)
+            "originalContentUrl": inu_url,
+            "previewImageUrl": inu_url
           };
           // 画像情報（ダミー）
           var image_dummy = {
@@ -55,7 +58,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           console.dir(image);
           console.dir(image_dummy);
           // replyMessage()で返信し、そのプロミスをevents_processedに追加。
-          events_processed.push(bot.replyMessage(event.replyToken, image_dummy));
+          events_processed.push(bot.replyMessage(event.replyToken, image));
         });
       }
     }
