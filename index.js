@@ -1,7 +1,7 @@
 // モジュールのインポート
 const server = require("express")();
 const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
-const messaging = require('line-messaging');
+const messaging = require("line-messaging");
 
 // パラメータ設定
 const line_config = {
@@ -16,11 +16,10 @@ server.listen(process.env.PORT || 3000);
 const bot = new line.Client(line_config);
 
 // 画像
-const image = new messaging.ImageMessageBuilder
-  (
-    'https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg',
-    'https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg'
-  );
+const image = new messaging.ImageMessageBuilder(
+  'https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg',
+  'https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg'
+);
 
 // ルーター設定
 server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
