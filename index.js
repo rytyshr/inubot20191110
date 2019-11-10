@@ -46,8 +46,14 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             "originalContentUrl": JSON.stringify(body.message),
             "previewImageUrl": JSON.stringify(body.message)
           };
+          // 画像情報（ダミー）
+          var image_dummy = {
+            "type": "image",
+            "originalContentUrl": "https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg",
+            "previewImageUrl": "https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg"
+          };
           // replyMessage()で返信し、そのプロミスをevents_processedに追加。
-          events_processed.push(bot.replyMessage(event.replyToken, image));
+          events_processed.push(bot.replyMessage(event.replyToken, image_dummy));
         });
       }
     }
