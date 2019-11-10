@@ -16,10 +16,10 @@ server.listen(process.env.PORT || 3000);
 const bot = new line.Client(line_config);
 
 // 画像
-const image = new messaging.ImageMessageBuilder(
-  'https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg',
-  'https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg'
-);
+//const image = new messaging.ImageMessageBuilder(
+//  'https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg',
+//  'https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg'
+//);
 
 // ルーター設定
 server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
@@ -36,7 +36,10 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
         // ユーザーからのテキストメッセージが「こんにちは」だった場合のみ反応。
           if (event.message.text == "こんにちは"){
             // replyMessage()で返信し、そのプロミスをevents_processedに追加。
-              events_processed.push(bot.replyMessage(event.replyToken, image));
+              events_processed.push(bot.replyMessage(event.replyToken, new messaging.ImageMessageBuilder(
+                'https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg',
+                'https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg'
+              )));
           }
       }
   });
