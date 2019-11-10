@@ -32,6 +32,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
               events_processed.push(bot.replyMessage(event.replyToken, {
                   type: "image",
                   originalContentUrl: "https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg"
+                  previewImageUrl: "https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg"
               }));
           }
       }
