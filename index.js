@@ -17,7 +17,7 @@ server.listen(process.env.PORT || 3000);
 // APIコールのためのクライアントインスタンスを作成
 const bot = new line.Client(line_config);
 
-// 犬APIを叩く時に使う使う情報
+// 犬APIを叩く時に使う情報
 const options = {
   url: "https://dog.ceo/api/breeds/image/random",
   method: "GET",
@@ -52,6 +52,8 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             "originalContentUrl": "https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg",
             "previewImageUrl": "https://images.dog.ceo/breeds/otterhound/n02091635_3703.jpg"
           };
+          console.dir(image);
+          console.dir(image_dummy);
           // replyMessage()で返信し、そのプロミスをevents_processedに追加。
           events_processed.push(bot.replyMessage(event.replyToken, image_dummy));
         });
