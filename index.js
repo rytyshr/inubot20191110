@@ -32,32 +32,25 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   // すべてのイベント処理のプロミスを格納する配列。
   let events_processed = [];
 
-  //犬画像URL
-  let inu_url = '';
-
-  // 犬APIを叩く
-  request(options, function (error, response, body) {
-    inu_url = JSON.stringify(body.message);
-    console.log(inu_url);
-  });
-
-  // 画像情報
-  let image = {
-    "type": "image",
-    "originalContentUrl": inu_url,
-    "previewImageUrl": inu_url
-  };
-
   // イベントオブジェクトを順次処理。
   req.body.events.forEach((event) => {
-      // この処理の対象をイベントタイプがメッセージで、かつ、テキストタイプだった場合に限定。
-      if (event.type == "message" && event.message.type == "text"){
-        // ユーザーからのテキストメッセージが「こんにちは」だった場合のみ反応。
-          if (event.message.text == "こんにちは"){
-            // replyMessage()で返信し、そのプロミスをevents_processedに追加。
-              events_processed.push(bot.replyMessage(event.replyToken, image));
-          }
+    // この処理の対象をイベントタイプがメッセージで、かつ、テキストタイプだった場合に限定。
+    if (event.type == "message" && event.message.type == "text"){
+      // ユーザーからのテキストメッセージが「こんにちは」だった場合のみ反応。
+      if (event.message.text == "こんにちは"){
+        // 犬APIを叩く
+        request(options, function (error, response, body) {
+          // 画像情報
+          var image = {
+            "type": "image",
+            "originalContentUrl": JSON.stringify(body.message),
+            "previewImageUrl": JSON.stringify(body.message)
+          };
+          // replyMessage()で返信し、そのプロミスをevents_processedに追加。
+          events_processed.push(bot.replyMessage(event.replyToken, image));
+        });
       }
+    }
   });
 
   // すべてのイベント処理が終了したら何個のイベントが処理されたか出力。
