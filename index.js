@@ -41,7 +41,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
         // 犬APIを叩く
         request(options, function (er, rs, body) {
           // 犬画像URL
-          var inu_url = JSON.stringify(body.message);
+          var inu_url = body.message;
 
           // 画像情報
           var image = {
