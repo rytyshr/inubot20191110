@@ -54,6 +54,12 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
         // replyMessage()で返信し、そのプロミスをevents_processedに追加。
         events_processed.push(bot.replyMessage(event.replyToken, [message, image]));
       });
+    } else {
+      // replyMessage()で返信し、そのプロミスをevents_processedに追加。
+      events_processed.push(bot.replyMessage(event.replyToken, {
+        type: "text",
+        text: "犬が欲しいと送ってみて"
+      }));
     }
   });
 
@@ -62,5 +68,5 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
     (response) => {
       console.log(`${response.length} event(s) processed.`);
     }
-    );
+  );
 });
