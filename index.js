@@ -44,7 +44,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
     if (event.type == "message" && event.message.type == "text"){
       // 犬APIを叩く
       request(options, function (er, rs, body) {
-        inu_url = body.message;
+        let inu_url = body.message;
         // 取得した画像URLをセット
         let image = {
           "type": "image",
