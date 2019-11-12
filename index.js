@@ -42,18 +42,19 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   req.body.events.forEach((event) => {
     // この処理の対象をイベントタイプがメッセージで、かつ、テキストタイプだった場合に限定。
     if (event.type == "message" && event.message.type == "text"){
+      let inu_url;
       // 犬APIを叩く
       request(options, function (er, rs, body) {
-        let inu_url = body.message;
-        // 取得した画像URLをセット
-        let image = {
-          "type": "image",
-          "originalContentUrl": inu_url,
-          "previewImageUrl": inu_url
-        };
-        // replyMessage()で返信し、そのプロミスをevents_processedに追加。
-        events_processed.push(bot.replyMessage(event.replyToken, [message, image]));
+        inu_url = body.message;
       });
+      // 取得した画像URLをセット
+      let image = {
+        "type": "image",
+        "originalContentUrl": inu_url,
+        "previewImageUrl": inu_url
+      };
+      // replyMessage()で返信し、そのプロミスをevents_processedに追加。
+      events_processed.push(bot.replyMessage(event.replyToken, [message, image]));
     } else {
       // replyMessage()で返信し、そのプロミスをevents_processedに追加。
       events_processed.push(bot.replyMessage(event.replyToken, {
