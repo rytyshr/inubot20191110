@@ -42,7 +42,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
     if (event.type == "message" && event.message.type == "text"){
       rp(options)
         .then(function (repos) {
-          if (repos.status != "success") {
+          if (repos.status == "success") {
             var image = {
               "type": "image",
               "originalContentUrl": repos.message,
@@ -50,20 +50,27 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             };
             return image;
           } else {
-            throw new Error("request失敗");
+            throw new Error("requestエラー");
           }
         })
         .then(function (image) {
-          bot.replyMessage(event.replyToken, [message, image]);
+          var is_replyed = bot.replyMessage(event.replyToken, [message, image]);
+          if(!is_replyed){
+            throw new Error("返信エラー");
+          };
         })
         .catch(function (err) {
           console.dir(err);
-        });
+          bot.replyMessage(event.replyToken, {
+            type: "text",
+            text: "いいのがちょっとないので後ほどメッセージをください..."
+          });
+            });
     } else {
       // replyMessage()で返信し、そのプロミスをevents_processedに追加。
       bot.replyMessage(event.replyToken, {
         type: "text",
-        text: "犬が欲しいと送ってみて"
+        text: "メッセージを送ってみて"
       });
     }
   });
