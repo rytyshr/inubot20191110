@@ -43,15 +43,18 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   req.body.events.forEach((event) => {
     // この処理の対象をイベントタイプがメッセージで、かつ、テキストタイプだった場合に限定。
     if (event.type == "message" && event.message.type == "text"){
+      console.log('passed_1st');
       rp(options)
         .then(function (repos) {
-            let image = {
+          console.log('passed_2nd');
+          let image = {
               "type": "image",
               "originalContentUrl": repos.message,
               "previewImageUrl": repos.message
             };
           })
         .then(function (image) {
+          console.log('passed_3rd');
           bot.replyMessage(event.replyToken, [message, image]);
         })
         .catch(function (err) {
