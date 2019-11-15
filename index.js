@@ -3,7 +3,6 @@
 // モジュールのインポート
 const server = require("express")();
 const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
-const request = require("request");
 const rp = require('request-promise');
 
 // メッセージ
@@ -54,11 +53,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           }
         })
         .then(function (image) {
-          var rs = bot.replyMessage(event.replyToken, [message, image]);
-          if(!rs.isSucceeded()){
-            console.dir(rs);
-            throw new Error("返信エラー / " + rs.getHTTPStatus + " / " + $rs.getRawBody());
-          };
+          bot.replyMessage(event.replyToken, [message, image]);
         })
         .catch(function (err) {
           console.dir(err);
@@ -66,9 +61,8 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             type: "text",
             text: "いいのがちょっとないので後ほどメッセージをください..."
           });
-            });
+        });
     } else {
-      // replyMessage()で返信し、そのプロミスをevents_processedに追加。
       bot.replyMessage(event.replyToken, {
         type: "text",
         text: "メッセージを送ってみて"
