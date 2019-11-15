@@ -4,6 +4,7 @@
 const server = require("express")();
 const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
 const request = require("request");
+const rp = require('request-promise');
 
 // メッセージ
 const message = {
@@ -42,7 +43,21 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   req.body.events.forEach((event) => {
     // この処理の対象をイベントタイプがメッセージで、かつ、テキストタイプだった場合に限定。
     if (event.type == "message" && event.message.type == "text"){
-      // 犬APIを叩く
+      rp(options)
+        .then(function (repos) {
+            let image = {
+              "type": "image",
+              "originalContentUrl": repos.message,
+              "previewImageUrl": repos.message
+            };
+          })
+        .then(function (image) {
+          bot.replyMessage(event.replyToken, [message, image]);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+/**       // 犬APIを叩く
       request(options, function (er, rs, body) {
         let inu_url = body.message;
         // 取得した画像URLをセット
@@ -54,19 +69,13 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
         // replyMessage()で返信し、そのプロミスをevents_processedに追加。
         events_processed.push(bot.replyMessage(event.replyToken, [message, image]));
       });
+*/
     } else {
       // replyMessage()で返信し、そのプロミスをevents_processedに追加。
-      events_processed.push(bot.replyMessage(event.replyToken, {
+      bot.replyMessage(event.replyToken, {
         type: "text",
         text: "犬が欲しいと送ってみて"
-      }));
+      });
     }
   });
-
-  // すべてのイベント処理が終了したら何個のイベントが処理されたか出力。
-  Promise.all(events_processed).then(
-    (response) => {
-      console.log(`${response.length} event(s) processed.`);
-    }
-  );
 });
