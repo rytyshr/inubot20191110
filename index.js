@@ -47,18 +47,18 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
       rp(options)
         .then(function (repos) {
           console.log('passed_2nd');
-          let image = {
+          var image = {
               "type": "image",
               "originalContentUrl": repos.message,
               "previewImageUrl": repos.message
             };
           })
         .then(function (image) {
-          console.log('passed_3rd');
+          console.dir(image);
           bot.replyMessage(event.replyToken, [message, image]);
         })
         .catch(function (err) {
-          console.log(err);
+          console.dir(err);
         });
 /**       // 犬APIを叩く
       request(options, function (er, rs, body) {
