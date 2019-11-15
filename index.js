@@ -36,20 +36,18 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   // 先行してLINE側にステータスコード200でレスポンスする。
   res.sendStatus(200);
   
-  // すべてのイベント処理のプロミスを格納する配列。
-  let events_processed = [];
-  
   // イベントオブジェクトを順次処理。
   req.body.events.forEach((event) => {
     // この処理の対象をイベントタイプがメッセージで、かつ、テキストタイプだった場合に限定。
     if (event.type == "message" && event.message.type == "text"){
       rp(options)
         .then(function (repos) {
-          var image = {
+          return {
               "type": "image",
               "originalContentUrl": repos.message,
               "previewImageUrl": repos.message
             };
+            return image;
           })
         .then(function (image) {
           bot.replyMessage(event.replyToken, [message, image]);
