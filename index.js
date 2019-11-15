@@ -42,13 +42,17 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
     if (event.type == "message" && event.message.type == "text"){
       rp(options)
         .then(function (repos) {
-          return {
+          if (repos.status != "success") {
+            var image = {
               "type": "image",
               "originalContentUrl": repos.message,
               "previewImageUrl": repos.message
             };
             return image;
-          })
+          } else {
+            throw new Error("request失敗");
+          }
+        })
         .then(function (image) {
           bot.replyMessage(event.replyToken, [message, image]);
         })
