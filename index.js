@@ -52,6 +52,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
               "originalContentUrl": repos.message,
               "previewImageUrl": repos.message
             };
+            return image;
           })
         .then(function (image) {
           console.dir(image);
