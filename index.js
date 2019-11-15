@@ -56,6 +56,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
         .then(function (image) {
           var rs = bot.replyMessage(event.replyToken, [message, image]);
           if(!rs.isSucceeded()){
+            console.dir(rs);
             throw new Error("返信エラー / " + rs.getHTTPStatus + " / " + $rs.getRawBody());
           };
         })
