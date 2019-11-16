@@ -10,4 +10,4 @@
 - LINE Messaging API
 - Dog API
 ### QRコード
-<img src="https://qr-official.line.me/sid/L/857fpfys.png" width="200">
+![QRcode](https://qr-official.line.me/sid/L/857fpfys.png)
