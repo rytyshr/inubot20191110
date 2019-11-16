@@ -9,5 +9,5 @@
 - node.js
 - LINE Messaging API
 - Dog API
-### QRコード
-<img src="https://qr-official.line.me/sid/M/857fpfys.png">
+
+<a href="http://nav.cx/s6E8G0N"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"></a>
